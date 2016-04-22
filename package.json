@@ -1,0 +1,15 @@
+{
+  "name": "SocialMediaProfiler",
+  "version": "0.0.0",
+  "description": "Find a persons social media profiles based on a name",
+  "private": true,
+  "main": "server.js",
+  "author": "us",
+  "dependencies": {
+    "body-parser": "~1.5.2",
+    "express": "~4.8",
+    "morgan": "~1.2.2",
+    "node-twitter-api": "^1.7.1",
+    "twitter": "^1.2.5"
+  }
+}
