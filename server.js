@@ -12,11 +12,7 @@ app.use(morgan('dev'));    /* log everything to console */
 app.use(bodyParser.urlencoded({'extended' : 'false'}));
 app.use(bodyParser.json());
 
-// require(__dirname+'/app/routes.js')(app)
-app.get('/twitter', function (req, res) {
-    console.log("Got it");
-    res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
-});
+require(__dirname+'/app/routes.js')(app)
 
 /* server start */
 app.listen(8080);
