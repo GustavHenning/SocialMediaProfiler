@@ -9,6 +9,7 @@
     "body-parser": "~1.5.2",
     "express": "~4.8",
     "morgan": "~1.2.2",
-    "node-twitter-api": "^1.7.1"
+    "node-twitter-api": "^1.7.1",
+    "twitter": "^1.2.5"
   }
 }
