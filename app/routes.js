@@ -38,7 +38,7 @@ module.exports = function(app){
 			res.write('<ul>');
 			users.forEach(function(user, i, users) {
 				console.log(user.name);
-				res.write('<li>'+user.name+'</li>');
+				res.write('<li>'+user.name+' <em>'+user.screen_name+'</em></li>');
 			});
 			res.write('</ul>');
 			res.end()
