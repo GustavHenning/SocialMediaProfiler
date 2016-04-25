@@ -59,6 +59,33 @@ module.exports = function(app){
 						}
 						);
 				});
+				calls.push(function(callback) {
+					jsdom.env(
+						"http://linkedin.com/in/"+user.screen_name,
+						["http://code.jquery.com/jquery.js"],
+						function (err, window) {
+							console.log(window.document);
+							if (!err) {
+								var name = window.$(".full-name").text();
+								console.log('Hello '+name);
+								console.log("there have been", window.$(".full-name").length, "io.js releases!");
+								if (name != "") {
+									res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on LinkedIn by '+name);
+									if (name.toLowerCase() == user.name.toLowerCase()) {
+										res.write(': seems to be the same person!</li>');
+									} else {
+										res.write(': no clear connection</li>');
+									}
+								}
+							}
+							callback();
+						}, {
+						  FetchExternalResources: ["script"],
+						  ProcessExternalResources: ["script"],
+						  SkipExternalResources: false,
+						  MutationEvents: 2.0
+						});
+				});
 				res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
 			});
 			async.parallel(calls, function(err, result) {
