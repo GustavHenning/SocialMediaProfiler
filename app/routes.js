@@ -95,7 +95,7 @@ module.exports = function(app){
 						});
 					}
 				});
-				//res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
+				res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
 			});
 			async.parallel(calls, function(err, result) {
 				if (err)
