@@ -9,7 +9,9 @@ var instagramCfg = require('../config/instagram.json');
 
 var instagram = require('nodestagram').createClient(instagramCfg.client_id, instagramCfg.client_secret);
 
+var jsdom = require('jsdom');
 var twitterClient = new Twitter(twitterCfg);
+var async = require('async');
 
 module.exports = function(app){
 	app.get('/twitter/:handle', function (req, res) {
@@ -42,15 +44,40 @@ module.exports = function(app){
 		});
 		res.setHeader("Content-Type", "text/html;Charset=utf-8");
 		res.writeHead(200);
-		twitterClient.get('users/search', {q: req.body.fullName}, function(error, users, response){
-			res.write('<ul>');
+		twitterClient.get('users/search', {q: req.body.fullName}, function(error, users, response) {
+			res.write('<h1>Twitter:</h1><ul>')
+			var calls = [];
 			users.forEach(function(user, i, users) {
 				res.write('<li>'+user.name+' <em>'+user.screen_name+'</em></li>');
+				calls.push(function(callback) {
+					jsdom.env(
+						"http://facebook.com/"+user.screen_name,
+						["http://code.jquery.com/jquery.js"],
+						function (err, window) {
+							var name = window.$("#fb-timeline-cover-name").text();
+							if (name != "") {
+								res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Facebook by '+name);
+								if (name.toLowerCase() == user.name.toLowerCase()) {
+									res.write(': seems to be the same person!</li>');
+								} else {
+									res.write(': no clear connection</li>');
+								}
+							}
+							callback();
+						}
+						);
+					res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
+				});
 			});
-			res.write('</ul>');
-			res.end()
+			async.parallel(calls, function(err, result) {
+				if (err)
+					return console.log(err);
+				console.log(result);
+				res.end();
+			});
 		});
 	});
+
 
 	app.get("/", function(req, res) {
 		res.sendFile(path.resolve(__dirname + '/../public/index.html')) // load the single view file (angular will handle the page changes on the front-end)

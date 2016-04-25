@@ -6,9 +6,11 @@
   "main": "server.js",
   "author": "us",
   "dependencies": {
+    "async": "^2.0.0-rc.3",
     "body-parser": "~1.5.2",
     "express": "~4.8",
     "instagram": "0.0.4",
+    "jsdom": "^8.4.0",
     "morgan": "~1.2.2",
     "node-twitter-api": "^1.7.1",
     "twitter": "^1.2.5",
