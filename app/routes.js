@@ -5,6 +5,10 @@ var path = require("path");
 var Twitter = require('twitter');
 var twitterCfg = require('../config/twitter.json');
 
+var instagramCfg = require('../config/instagram.json');
+
+var instagram = require('nodestagram').createClient(instagramCfg.client_id, instagramCfg.client_secret);
+
 var twitterClient = new Twitter(twitterCfg);
 
 module.exports = function(app){
@@ -32,12 +36,15 @@ module.exports = function(app){
 	});
 
 	app.post('/searches', function(req, res) {
+		console.log("yo0");
+		instagram.users.search("Perkola", function (users, error) {
+			console.log(users);
+		});
 		res.setHeader("Content-Type", "text/html;Charset=utf-8");
 		res.writeHead(200);
 		twitterClient.get('users/search', {q: req.body.fullName}, function(error, users, response){
 			res.write('<ul>');
 			users.forEach(function(user, i, users) {
-				console.log(user.name);
 				res.write('<li>'+user.name+' <em>'+user.screen_name+'</em></li>');
 			});
 			res.write('</ul>');
