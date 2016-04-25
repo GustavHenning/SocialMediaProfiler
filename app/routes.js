@@ -3,14 +3,9 @@
 var path = require("path");
 
 var Twitter = require('twitter');
-var twitterClient = new Twitter({
-	consumer_key: 'en2CmXHVE8r80i3Q83Y04Ijhw',
-	consumer_secret: 'U3IZbytzRjVzBBnTAteL0j2YqVss5MpVXo4J1p17Omp1kWpWIZ',
-	access_token_key: '407880627-iioHGFPHU1uHbaOWkRS1xNuCNmQXmpU5NKJh1rY4',
-	access_token_secret: 'yjTIxoXIoemi6tA2kBR1drQIqAXCBquTel1nUcrmMUeox'
-});
+var twitterCfg = require('../config/twitter.json');
 
-var instagramClient = require('instagram').createClient('<client_id>', '<client_secret>');
+var twitterClient = new Twitter(twitterCfg);
 
 module.exports = function(app){
 	app.get('/twitter/:handle', function (req, res) {
@@ -34,5 +29,10 @@ module.exports = function(app){
 				res.end();
 			}
 		});
+	});
+}
+
+app.get("/", function(req, res){
+		res.sendFile(path.resolve(__dirname + '/../public/index.html')) // load the single view file (angular will handle the page changes on the front-end)
 	});
 }

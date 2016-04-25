@@ -1,10 +1,15 @@
 <!doctype html>
+<<<<<<< HEAD
 
+=======
+<html ng-app="socialMediaSearch">
+>>>>>>> 334d12399abc66c7d2da467a33e7b0e6001bc5a6
 <head>
 
 	<!-- META -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
 	<!-- Optimize mobile viewport -->
 
 	<title>SocialMediaProfiler</title>
@@ -13,3 +18,32 @@
 <body>
 <h1>Carpe diem quam minimum credula postero</h1>
 </body>
+=======
+	<title>SocialMediaProfiler</title>
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+	<!-- SPELLS -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="js/controllers/main.js"></script>
+	<script src="js/services/search.js"></script>
+	<script src="js/core.js"></script>
+
+</head>
+<body ng-controller="mainController">
+	<div id="header" class="jumbotron text-center">
+			<h1>Social Media Search</h1>
+	</div>
+	<div id="searchForm" class="row">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+	<form>
+		<div class="form-group">
+			<input type="text" class="form-control input-lg text-center" placeholder="Enter the first and last name of a person" ng-model="formData.text">
+		</div>
+		<button type="submit" class="btn btn-primary btn-lg" ng-click="findPerson()">Search</button>
+	</form>
+	</div>
+</body>
+
+</html>
+>>>>>>> 334d12399abc66c7d2da467a33e7b0e6001bc5a6

@@ -8,9 +8,16 @@
   "dependencies": {
     "body-parser": "~1.5.2",
     "express": "~4.8",
+<<<<<<< HEAD
     "instagram": "0.0.4",
     "morgan": "~1.2.2",
     "node-twitter-api": "^1.7.1",
     "twitter": "^1.2.5"
+=======
+    "morgan": "~1.2.2",
+    "node-twitter-api": "^1.7.1",
+    "twitter": "^1.2.5",
+    "nodestagram": "~0.1.1"
+>>>>>>> 334d12399abc66c7d2da467a33e7b0e6001bc5a6
   }
 }
