@@ -13,7 +13,7 @@
     "jsdom": "^8.4.0",
     "morgan": "~1.2.2",
     "node-twitter-api": "^1.7.1",
-    "nodestagram": "~0.1.1",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "nodestagram": "~0.1.1"
   }
 }

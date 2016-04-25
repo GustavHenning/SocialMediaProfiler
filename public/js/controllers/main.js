@@ -1,4 +1,4 @@
-var profiler = require("../../../lib/profiler.js");
+//var profiler = require("../../../lib/profiler.js");
 
 angular.module("searchController", [])
     .controller("mainController", ["$scope", "$http", "Search", function($scope, $http, Search){
@@ -7,7 +7,7 @@ angular.module("searchController", [])
           if($scope.formData.text){
             console.log("Search for " + $scope.formData.text);
             /* sanity checks */
-            profiler($scope.formData.text);
+            //profiler($scope.formData.text);
           }
       }
 }]);
