@@ -30,11 +30,11 @@
 	</div>
 	<div id="searchForm" class="row">
 		<div class="col-sm-8 col-sm-offset-2 text-center">
-	<form>
+	<form action="searches" method="post">
 		<div class="form-group">
-			<input type="text" class="form-control input-lg text-center" placeholder="Enter the first and last name of a person" ng-model="formData.text">
+			<input type="text" class="form-control input-lg text-center" placeholder="Enter the first and last name of a person" name="fullName">
 		</div>
-		<button type="submit" class="btn btn-primary btn-lg" ng-click="findPerson()">Search</button>
+		<button type="submit" class="btn btn-primary btn-lg">Search</button>
 	</form>
 	</div>
 </body>

@@ -31,6 +31,13 @@ module.exports = function(app){
 		});
 	});
 
+	app.post('/searches', function(req, res) {
+		res.setHeader("Content-Type", "text/html;Charset=utf-8");
+		res.writeHead(200);
+		console.log(req.body.fullName);
+		res.end()
+	});
+
 	app.get("/", function(req, res) {
 		res.sendFile(path.resolve(__dirname + '/../public/index.html')) // load the single view file (angular will handle the page changes on the front-end)
 	});
