@@ -91,6 +91,10 @@ module.exports = function(app){
 						users.forEach(function(instaUser) {
 							if (user.name == instaUser.full_name) {
 								res.write('<li>Instagram: <img src="'+instaUser.profile_picture+'">');
+								console.log(instaUser.id);
+								instagram.users.id(instaUser.id, function (instaUser2, error) {
+									res.write('<li>More instagram: '+JSON.stringify(instaUser2));
+								});
 							}
 						});
 					}
