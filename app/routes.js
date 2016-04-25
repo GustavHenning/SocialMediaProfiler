@@ -34,8 +34,15 @@ module.exports = function(app){
 	app.post('/searches', function(req, res) {
 		res.setHeader("Content-Type", "text/html;Charset=utf-8");
 		res.writeHead(200);
-		console.log(req.body.fullName);
-		res.end()
+		twitterClient.get('users/search', {q: req.body.fullName}, function(error, users, response){
+			res.write('<ul>');
+			users.forEach(function(user, i, users) {
+				console.log(user.name);
+				res.write('<li>'+user.name+'</li>');
+			});
+			res.write('</ul>');
+			res.end()
+		});
 	});
 
 	app.get("/", function(req, res) {
