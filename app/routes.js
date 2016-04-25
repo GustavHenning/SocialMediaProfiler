@@ -45,24 +45,46 @@ module.exports = function(app){
 						["http://code.jquery.com/jquery.js"],
 						function (err, window) {
 							var name = window.$("#fb-timeline-cover-name").text();
-							if (name != "") {
-								res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Facebook by '+name);
-								if (name.toLowerCase() == user.name.toLowerCase()) {
-									res.write(': seems to be the same person!</li>');
-								} else {
-									res.write(': no clear connection</li>');
+							if (!err) {
+								if (name != "") {
+									res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Facebook by '+name);
+									if (name.toLowerCase() == user.name.toLowerCase()) {
+										res.write(': seems to be the same person!</li>');
+									} else {
+										res.write(': no clear connection</li>');
+									}
 								}
 							}
 							callback();
 						}
 						);
-					res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
 				});
+				calls.push(function(callback) {
+					jsdom.env(
+						"http://instagram.com/"+user.screen_name,
+						["http://code.jquery.com/jquery.js"],
+						function (err, window) {
+							if (!err) {
+								var name = window.$("._79dar");
+								console.log('Hopp: '+name);
+								if (name != "") {
+									res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Instagram by '+name);
+									if (name.toLowerCase() == user.name.toLowerCase()) {
+										res.write(': seems to be the same person!</li>');
+									} else {
+										res.write(': no clear connection</li>');
+									}
+								}
+							}
+							callback();
+						}
+						);
+				});
+				res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
 			});
 			async.parallel(calls, function(err, result) {
 				if (err)
 					return console.log(err);
-				console.log(result);
 				res.end();
 			});
 		});
