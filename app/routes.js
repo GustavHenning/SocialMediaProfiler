@@ -21,45 +21,47 @@ module.exports = function(app) {
     res.writeHead(200);
     /* Given a name, do a generic search for data.
      * TODO: Make async better, now we are chaining like plebs (Maybe use promises?) */
-		var calls = [];
-		/* TWITTER */
-    twitterClient.get('users/search', { q: req.body.fullName }, function(err, users, response) {
+    var calls = [];
+    /* TWITTER */
+    twitterClient.get('users/search', {
+      q: req.body.fullName
+    }, function(err, users, response) {
       if (!err) {
         users.forEach(function(user, i, users) {
-		      calls.push(function(callback) {
+          calls.push(function(callback) {
             profiler.putData(user.screen_name, "twitter", user);
-						res.write("<li> " + user.screen_name + ": twitter </li>");
-						callback();
+            res.write("<li> " + user.screen_name + ": twitter </li>");
+            callback();
           });
         });
       } else {
         console.error("Error searching for usernames on twitter: " + err);
       }
-			/* INSTAGRAM */
-			instagram.users.search(req.body.fullName, function(users, err) {
-				if (!err) {
-					users.forEach(function(user, i, users) {
-						calls.push(function(callback) {
-							profiler.putData(user.name.toString(), "instagram", user);
-							res.write("<li> " + user.name.toString() + ": instagram </li>");
-							callback();
-						});
-					});
-				} else {
-					console.error("Error searching for usernames on instagram: " + err);
-				}
-				/* TODO: Add general facebook, linkedin search */
-				/* ASYNC */
-				async.parallel(calls, function(err, result) {
-					if (err)
-						return console.log(err);
-					profiler.setRelevance();
-					res.write('<h1>Done!</h1>');
-					res.end();
-				});
-			});
+      /* INSTAGRAM */
+      instagram.users.search(req.body.fullName, function(users, err) {
+        if (!err) {
+          users.forEach(function(user, i, users) {
+            calls.push(function(callback) {
+              profiler.putData(user.name.toString(), "instagram", user);
+              res.write("<li> " + user.name.toString() + ": instagram </li>");
+              callback();
+            });
+          });
+        } else {
+          console.error("Error searching for usernames on instagram: " + err);
+        }
+        /* TODO: Add general facebook, linkedin search */
+        /* ASYNC */
+        async.parallel(calls, function(err, result) {
+          if (err)
+            return console.log(err);
+          profiler.setRelevance();
+          res.write('<h1>Done!</h1>');
+          res.end();
+        });
+      });
     });
-		/* TODO: Add additional searches based on usernames(?) */
+    /* TODO: Add additional searches based on usernames(?) */
   });
 
 
