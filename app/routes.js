@@ -38,17 +38,13 @@ module.exports = function(app){
 	});
 
 	app.post('/searches', function(req, res) {
-		console.log("yo0");
-		instagram.users.search("Perkola", function (users, error) {
-			console.log(users);
-		});
 		res.setHeader("Content-Type", "text/html;Charset=utf-8");
 		res.writeHead(200);
 		twitterClient.get('users/search', {q: req.body.fullName}, function(error, users, response) {
-			res.write('<h1>Twitter:</h1><ul>')
+			//res.write('<h1>Twitter:</h1><ul>')
 			var calls = [];
 			users.forEach(function(user, i, users) {
-				res.write('<li>'+user.name+' <em>'+user.screen_name+'</em></li>');
+				res.write('<li>Twitter: '+user.name+' <em>'+user.screen_name+'</em></li>');
 				calls.push(function(callback) {
 					jsdom.env(
 						"http://facebook.com/"+user.screen_name,
@@ -78,8 +74,8 @@ module.exports = function(app){
 								var name = window.$("._79dar");
 								console.log('Hopp: '+name);
 								if (name != "") {
-									res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Instagram by '+name);
-									if (name.toLowerCase() == user.name.toLowerCase()) {
+									res.write('<li>Handle <strong>'+user.screen_name+'</strong> is used on Instagram by '+JSON.stringify(name));
+									if (name.toString().toLowerCase() == user.name.toString().toLowerCase()) {
 										res.write(': seems to be the same person!</li>');
 									} else {
 										res.write(': no clear connection</li>');
@@ -90,7 +86,16 @@ module.exports = function(app){
 						}
 						);
 				});
-				res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
+				instagram.users.search(user.screen_name, function (users, error) {
+					if (!error) {
+						users.forEach(function(instaUser) {
+							if (user.name == instaUser.full_name) {
+								res.write('<li>Instagram: <img src="'+instaUser.profile_picture+'">');
+							}
+						});
+					}
+				});
+				//res.write('<li>'+user.name+' has Twitter handle <strong>'+user.screen_name+'</strong></li>');
 			});
 			async.parallel(calls, function(err, result) {
 				if (err)
