@@ -42,8 +42,9 @@ module.exports = function(app) {
         if (!err) {
           users.forEach(function(user, i, users) {
             calls.push(function(callback) {
-              profiler.putData(user.name.toString(), "instagram", user);
-              res.write("<li> " + user.name.toString() + ": instagram </li>");
+              console.log(user);
+              profiler.putData(user.full_name.toString(), "instagram", user);
+              res.write("<li> " + user.full_name.toString() + ": instagram </li>");
               callback();
             });
           });
