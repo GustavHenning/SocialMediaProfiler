@@ -1,0 +1,17 @@
+{
+  "Hillary" : {
+    "name" : "Hillary Clinton",
+    "occupation" : "Professional Speaker",
+    "description" : "Currently running for POTUS"
+  },
+  "William" : {
+    "name" : "William TestMan",
+    "occupaction" : "Test subject",
+    "description" : "Looking for that beer money"
+  },
+  "J. Lannister" : {
+    "name" : "Ser Jamie Lannister",
+    "occupation" : "Knight",
+    "description" : "They call me a Usurper to the throne"
+  }
+}

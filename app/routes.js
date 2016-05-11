@@ -15,6 +15,10 @@ var twitterClient = require('twitter')(twitterCfg);
 
 var profiler = require('../lib/profiler');
 
+var TESTING = true;
+var fbTests = require('../testPosts/fbTest.json');
+var instaTests = require('../testPosts/instaTest.json');
+
 module.exports = function(app) {
 
 	app.get("/", function(req, res) {
@@ -22,12 +26,12 @@ module.exports = function(app) {
 	});
 
 	app.post('/searches', function(req, res) {
-		
+
 		/* Helpers that use our res */
 
 		var sendHeaders = function() {
 			res.setHeader("Content-Type", "text/html;Charset=utf-8");
-			res.writeHead(200);			
+			res.writeHead(200);
 		}
 		var printHit = function (s) {
 			res.write("<li>"+s+"</li>");
@@ -41,12 +45,12 @@ module.exports = function(app) {
 		})
 		.then(function (hits) {
 			for (var i = 0; i < hits.length; i++) {
-				var user = hits[i]
+				var user = hits[i];
 				printHit(user.screen_name + ": twitter");
 				profiler.putData(user.screen_name, "twitter", user);
 			}
 		}, function(err) {
-			console.error("twitterSearch failed:"+err)
+			console.error("twitterSearch failed: " + err);
 		})
 		.then(function() {
 			return promiseInstagramSearch('justin bieber');
@@ -57,7 +61,20 @@ module.exports = function(app) {
 				profiler.putData(user.full_name.toString(), "instagram", user);
 			}
 		}, function(err) {
-			console.error("instagramSearch failed:"+err)
+			console.error("instagramSearch failed: "+ err);
+		}).then(function(){
+			/* TEST PROFILES */
+			if(TESTING){
+				console.log("Testing enabled: adding dummy profiles");
+				for(var testProfile in fbTests){
+					printHit("[TestProfile] " + fbTests[testProfile].name + ": facebook");
+					profiler.putData(fbTests[testProfile].name, "facebook", fbTests[testProfile]);
+				}
+				for(var testProfile in instaTests){
+					printHit("[TestProfile] " + instaTests[testProfile].name + ": instagram");
+					profiler.putData(instaTests[testProfile].name, "instagram", instaTests[testProfile]);
+				}
+			}
 		})
 		.then(function() {
 			profiler.setRelevance();
@@ -66,7 +83,7 @@ module.exports = function(app) {
 		});
 
 		/* TODO: Add additional searches based on usernames(?) */
-		
+
 	});
 }
 
@@ -84,20 +101,21 @@ var promiseTwitterSearch = function(name) {
 		}
 	});
 	return deferred.promise;
-}
+};
 
 var promiseInstagramSearch = function(name) {
 	var deferred = Q.defer();
 	instagramClient.users.search(name, function(users, err) {
-		var hits = []
+		var hits = [];
 		if (!err) {
 			users.forEach(function(user, i, users) {
-				hits.push(user)
+				hits.push(user);
 			});
 			deferred.resolve(hits);
 		} else {
+			console.log(err);
 			deferred.reject(err);
 		}
 	});
 	return deferred.promise;
-}
+};

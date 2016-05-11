@@ -1,0 +1,18 @@
+{
+  "Jack" : {
+    "name" : "Jack Sparrow",
+    "occupation" : "Pirate",
+    "description" : "Business in the front, party in the back"
+  },
+  "Trump" : {
+    "name" : "Donald Trump",
+    "occupation" : "Controversial Business Man",
+    "description" : "Running for POTUS",
+    "inofficial_title" : "Trump"
+  },
+  "Jamie" : {
+    "name" : "Jamie Lannister",
+    "occupation" : "Usurper",
+    "description" : "I'll stab ya in the back!"
+  }
+}
