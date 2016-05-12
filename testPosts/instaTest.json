@@ -13,5 +13,40 @@
     "name" : "Ser Jamie Lannister",
     "occupation" : "Knight",
     "description" : "They call me a Usurper to the throne"
+  },
+  "Bjorn" : {
+    "name" : "Björn Borg",
+    "occupation" : "Tennis player",
+    "description" : "legend"
+  },
+  "Zlatan" : {
+    "name" : "Zlatan Ibrahimovic",
+    "occupation" : "Football player",
+    "description" : "Plays for the PSG football team"
+  },
+  "Beatrice Ask" : {
+    "name" : "Beatrice Ask",
+    "occupation" : "Oklart",
+    "description" : "Tvetydig människa"
+  },
+  "Carl Bildt" : {
+    "name" : "Carl Bildt",
+    "occupation" : "Allmänt härlig",
+    "description" : "Stadsmannamässig"
+  },
+  "Stefan Lövfen" : {
+    "name" : "Stefan Lövfen",
+    "occupation" : "Stadsminister",
+    "description" : "Käbbel är min specialitet"
+  },
+  "Magnus Härenstam" : {
+    "name" : "Magnus Härenstam",
+    "occupation" : "Skådespelare eller?",
+    "description" : "Mange"
+  },
+  "Kung Karl XVI Gustav" : {
+    "name" : "Kalle G",
+    "occupation" : "Konung",
+    "description" : "Har en basooka uppkallad efter sig"
   }
 }

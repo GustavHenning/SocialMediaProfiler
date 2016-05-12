@@ -78,6 +78,7 @@ module.exports = function(app) {
 		})
 		.then(function() {
 			profiler.setRelevance();
+			profiler.combineProfiles();
 			res.write('<h1>Done!</h1>');
     		res.end();
 		});

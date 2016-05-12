@@ -5,14 +5,30 @@
     "description" : "Business in the front, party in the back"
   },
   "Trump" : {
-    "name" : "Donald Trump",
+    "name" : "Donald J Trump",
     "occupation" : "Controversial Business Man",
-    "description" : "Running for POTUS",
-    "inofficial_title" : "Trump"
+    "description" : "Running for President of the United States",
+    "motto" : "#Trump2016 #MakeAmericaGreatAgain"
+  },
+  "Trump Jr" : {
+    "name" : "Donald Trump Jr",
+    "occupation" : "Controversial kid",
+    "descrption" : "Small loan of a million dollars",
+    "hates" : "liberals"
   },
   "Jamie" : {
     "name" : "Jamie Lannister",
     "occupation" : "Usurper",
     "description" : "I'll stab ya in the back!"
+  },
+  "Jonas Gardell" : {
+    "name" : "Jonas Gardell",
+    "occupation" : "Författare",
+    "description" : "Engagerad i viktiga frågor"
+  },
+  "Henning Mankell" : {
+    "name" : "Henning Mankell",
+    "occupation" : "Författare",
+    "description" : "My man"
   }
 }
