@@ -19,6 +19,12 @@ var TESTING = true;
 var fbTests = require('../testPosts/fbTest.json');
 var instaTests = require('../testPosts/instaTest.json');
 
+var mediaPic = {};
+mediaPic["facebook"] = "http://imgur.com/jA79lqd.png";
+mediaPic["twitter"] = "http://imgur.com/afc5psg.png";
+mediaPic["instagram"] = "http://imgur.com/mIn2nqX.png";
+mediaPic["linkedin"] = "http://imgur.com/xwsrA5H.png";
+
 module.exports = function(app) {
 
 	app.get("/", function(req, res) {
@@ -79,7 +85,7 @@ module.exports = function(app) {
 		})
 		.then(function() {
 			profiler.setRelevance();
-			profiler.combineProfiles();
+			injectResults(res, profiler.combineProfiles());
 			res.write('<h1>Done!</h1>');
     		res.end();
 		});
@@ -121,4 +127,27 @@ var promiseInstagramSearch = function(name) {
 		}
 	});
 	return deferred.promise;
+};
+/* Injects the JSON response from the profiler into the DOM */
+var injectResults = function(res, profiles) {
+	res.write("<div class='row'>");
+	for(var media in profiles){
+		res.write("<div class='col-md-4'>"); /* 4 needs to be replaced by number of social medias in json */
+		res.write(mediaPic[media] ? "<img src='" + mediaPic[media] + "'/>" : media);
+		res.write(injectJSON(res, profiles[media]);
+		res.write("</div>");	
+	}
+	res.write("</div>");
+};
+
+var injectJSON = function(res, json){
+	for(var key in json){
+		var s = json[key];
+		/* images */
+		if(s.indexOf("http") == 0 && (s.indexOf(".jpg") > -1 || s.indexOf(".jpeg") > -1 || s.indexOf(".png") > -1 || s.indexOf(".gif") > -1){
+			res.write("<img src='" + s + "'/>");
+		} else { /* other fields */
+			res.write(key + ": " s);
+		}
+	}
 };
