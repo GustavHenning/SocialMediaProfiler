@@ -57,8 +57,9 @@ module.exports = function(app) {
 		})
 		.then(function(hits) {
 			for (var i = 0; i < hits.length; i++) {
-				printHit(hits[i].screen_name + ": instagram");
-				profiler.putData(user.full_name.toString(), "instagram", user);
+				var user = hits[i];
+				printHit(user.full_name + ": instagram");
+				profiler.putData(user.full_name, "instagram", user);
 			}
 		}, function(err) {
 			console.error("instagramSearch failed: "+ err);
@@ -107,7 +108,7 @@ var promiseTwitterSearch = function(name) {
 var promiseInstagramSearch = function(name) {
 	var deferred = Q.defer();
 	instagramClient.users.search(name, function(users, err) {
-		console.log(users, err);
+		console.log(users);
 		var hits = [];
 		if (!err) {
 			users.forEach(function(user, i, users) {
