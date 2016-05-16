@@ -53,7 +53,7 @@ module.exports = function(app) {
 			console.error("twitterSearch failed: " + err);
 		})
 		.then(function() {
-			return promiseInstagramSearch('justin bieber');
+			return promiseInstagramSearch(req.body.fullName);
 		})
 		.then(function(hits) {
 			for (var i = 0; i < hits.length; i++) {
@@ -107,6 +107,7 @@ var promiseTwitterSearch = function(name) {
 var promiseInstagramSearch = function(name) {
 	var deferred = Q.defer();
 	instagramClient.users.search(name, function(users, err) {
+		console.log(users, err);
 		var hits = [];
 		if (!err) {
 			users.forEach(function(user, i, users) {
