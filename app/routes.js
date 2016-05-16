@@ -8,10 +8,12 @@ var Q = require('q');
 /* configs */
 var twitterCfg = require('../config/twitter.json');
 var instagramCfg = require('../config/instagram.json');
+var facebookCfg = require('../config/facebook.json');
 
 /* clients */
 var instagramClient = require('nodestagram').createClient(instagramCfg.client_id, instagramCfg.client_secret);
 var twitterClient = require('twitter')(twitterCfg);
+var facebookClient = require('fbgraph');
 
 var profiler = require('../lib/profiler');
 
@@ -70,6 +72,38 @@ module.exports = function(app) {
       }, function(err) {
         console.error("instagramSearch failed: " + err);
       }).then(function() {
+				/* FACEBOOK UNDER CONSTRUCTION  */
+				/* Start here: https://www.npmjs.com/package/fbgraph */
+				var authUrl = facebookClient.getOauthUrl({
+				"client_id" : facebookCfg.client_id,
+				"redirect_uri" : facebookCfg.redirect_uri
+				});
+			console.error(authUrl); /* we gotta make some kind of request here */
+				 facebookClient.authorize({
+					"access_token" : facebookCfg.access_token,
+					"client_id" : facebookCfg.client_id,
+					"redirect_uri" : facebookCfg.redirect_uri,
+					"client_secret" : facebookCfg.client_secret
+				}, function(err, facebookRes){
+					if(err){
+						console.error("fb auth failed: ");
+						console.error(err);
+						return;
+					}
+					var graphObject = facebookClient
+						.get(req.body.fullName, function(err, res) {
+							if(err){
+								console.error("fb failed: ");
+								console.error(err);
+								return;
+							}
+							console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
+						});
+				});
+      }, function(err) {
+        console.error("facebookSearch failed: " + err);
+      })
+      .then(function() {
         /* TEST PROFILES */
         if (TESTING) {
           console.log("Testing enabled: adding dummy profiles");
@@ -154,7 +188,7 @@ var injectJSON = function(res, json) {
   /* Not combined result */
   if (Object.keys(json).length > 5) {
     var keys = Object.keys(json);
-		injectImage(res, mediaPic[json["apiType"]]);
+    injectImage(res, mediaPic[json["apiType"]]);
     for (var ke in keys) {
       var s = json[keys[ke]];
       /* images */
@@ -202,6 +236,6 @@ var injectImage = function(res, i) {
 var injectString = function(res, key, s) {
   if (s.length > 1 && key !== "apiType" && key.indexOf("color") === -1 && key.indexOf("id") === -1) { /* other fields */
     res.write("\n <p><b>" + key.replace("_", " ").replace("_", " ") + ": </b>");
-		res.write(s + "</p>");
+    res.write(s + "</p>");
   }
 };
