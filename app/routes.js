@@ -142,20 +142,23 @@ var injectResults = function(res, profiles) {
 			}
 		}
 		/* Actual info */
-		injectJSON(res, profiles[media]);
+		injectJSON(res, profiles[prof]);
 		res.write("</div>");
 	}
 	res.write("</div>");
 };
 
 var injectJSON = function(res, json){
-	for(var key in json){
-		var s = json[key];
+	for(var k in json){
+		for(var key in json[k]){
+		var s = json[k][key];
+		console.log(s);
 		/* images */
 		if(s.indexOf("http") == 0 && (s.indexOf(".jpg") > -1 || s.indexOf(".jpeg") > -1 || s.indexOf(".png") > -1 || s.indexOf(".gif") > -1)){
 			res.write("<img src='" + s + "'/>");
 		} else { /* other fields */
 			res.write("<li>" + s + "</li>");
 		}
+	}
 	}
 };
