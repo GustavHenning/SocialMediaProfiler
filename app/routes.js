@@ -15,7 +15,7 @@ var twitterClient = require('twitter')(twitterCfg);
 
 var profiler = require('../lib/profiler');
 
-var TESTING = true;
+var TESTING = false;
 var fbTests = require('../testPosts/fbTest.json');
 var instaTests = require('../testPosts/instaTest.json');
 
@@ -131,11 +131,15 @@ var promiseInstagramSearch = function(name) {
 /* Injects the JSON response from the profiler into the DOM */
 var injectResults = function(res, profiles) {
 	res.write("<div class='row'>");
-	for(var media in profiles){
+	for(var prof in profiles){
+		res.write("<p>Hello " + JSON.stringify(profiles[prof]) + " </p>");
+		var media = Object.keys(profiles[prof]);
 		res.write("<div class='col-md-4'>"); /* 4 needs to be replaced by number of social medias in json */
-		res.write(mediaPic[media] ? "<img src='" + mediaPic[media] + "'/>" : media);
-		res.write(injectJSON(res, profiles[media]);
-		res.write("</div>");	
+		for(var n in media){
+			res.write("<img src='" + (mediaPic[media[n]] ? mediaPic[media[n]] : "") + "'/>");
+		}
+		//injectJSON(res, profiles[media]);
+		res.write("</div>");
 	}
 	res.write("</div>");
 };
@@ -144,10 +148,10 @@ var injectJSON = function(res, json){
 	for(var key in json){
 		var s = json[key];
 		/* images */
-		if(s.indexOf("http") == 0 && (s.indexOf(".jpg") > -1 || s.indexOf(".jpeg") > -1 || s.indexOf(".png") > -1 || s.indexOf(".gif") > -1){
+		if(s.indexOf("http") == 0 && (s.indexOf(".jpg") > -1 || s.indexOf(".jpeg") > -1 || s.indexOf(".png") > -1 || s.indexOf(".gif") > -1)){
 			res.write("<img src='" + s + "'/>");
 		} else { /* other fields */
-			res.write(key + ": " s);
+			res.write(s);
 		}
 	}
 };
