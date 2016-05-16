@@ -132,13 +132,17 @@ var promiseInstagramSearch = function(name) {
 var injectResults = function(res, profiles) {
 	res.write("<div class='row'>");
 	for(var prof in profiles){
-		res.write("<p>Hello " + JSON.stringify(profiles[prof]) + " </p>");
+		res.write("<p> User: </p>");
 		var media = Object.keys(profiles[prof]);
 		res.write("<div class='col-md-4'>"); /* 4 needs to be replaced by number of social medias in json */
+		/* Social media pictures */
 		for(var n in media){
-			res.write("<img src='" + (mediaPic[media[n]] ? mediaPic[media[n]] : "") + "'/>");
+			if(mediaPic[media[n]]){
+				res.write("<img src='" + mediaPic[media[n]] + "'/>");
+			}
 		}
-		//injectJSON(res, profiles[media]);
+		/* Actual info */
+		injectJSON(res, profiles[media]);
 		res.write("</div>");
 	}
 	res.write("</div>");
@@ -151,7 +155,7 @@ var injectJSON = function(res, json){
 		if(s.indexOf("http") == 0 && (s.indexOf(".jpg") > -1 || s.indexOf(".jpeg") > -1 || s.indexOf(".png") > -1 || s.indexOf(".gif") > -1)){
 			res.write("<img src='" + s + "'/>");
 		} else { /* other fields */
-			res.write(s);
+			res.write("<li>" + s + "</li>");
 		}
 	}
 };
