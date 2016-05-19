@@ -15,11 +15,7 @@
     "node-twitter-api": "^1.7.1",
     "nodestagram": "^0.1.1",
     "q": "^1.4.1",
-    "twitter": "^1.2.5"
-  },
-  "devDependencies": {
-    "facebook-search": "^0.1.1",
-    "fb": "^1.0.2",
-    "fbgraph": "^1.1.0"
+    "twitter": "^1.2.5",
+    "fb": "^1.0.2"
   }
 }

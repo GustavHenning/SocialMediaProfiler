@@ -27,6 +27,8 @@ mediaPic["twitter"] = "http://imgur.com/afc5psg.png";
 mediaPic["instagram"] = "http://imgur.com/mIn2nqX.png";
 mediaPic["linkedin"] = "http://imgur.com/xwsrA5H.png";
 
+  var seen = [];
+
 module.exports = function(app) {
 
   app.get("/", function(req, res) {
@@ -98,6 +100,7 @@ module.exports = function(app) {
       .then(function() {
         profiler.setRelevance();
         injectResults(res, profiler.combineProfiles());
+        seen = [];
         res.write('<h1>Done!</h1>');
         res.end();
       });
@@ -148,7 +151,7 @@ var promiseFacebookSearch = function(req){
         var hits = [];
         /* FACEBOOK UNDER CONSTRUCTION  */
         console.log('FACEBOOK');
-
+        facebookClient.options({timeout: 2000});
         facebookClient.api('oauth/access_token', {
           client_id: facebookCfg.client_id,
           client_secret: facebookCfg.client_secret,
@@ -203,7 +206,6 @@ var injectResults = function(res, profiles) {
 };
 
 var injectJSON = function(res, json) {
-  var seen = [];
   /* Not combined result */
   if (Object.keys(json).length > 5) {
     var keys = Object.keys(json);
