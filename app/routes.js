@@ -77,7 +77,7 @@ module.exports = function(app) {
         return promiseFacebookSearch(req);
       }).then(function(hits) {
           for(var i = 0; i < hits.length; i++){
-            console.log(hits[i]);
+            //console.log(hits[i]);
             profiler.putData(hits[i].id, "facebook", hits[i]);
           }
       }, function(err) {
@@ -131,7 +131,7 @@ var promiseTwitterSearch = function(name) {
 var promiseInstagramSearch = function(name) {
   var deferred = Q.defer();
   instagramClient.users.search(name, function(users, err) {
-    console.log(users);
+    //console.log(users);
     var hits = [];
     if (!err) {
       users.forEach(function(user, i, users) {
@@ -202,6 +202,7 @@ var injectResults = function(res, profiles) {
     injectJSON(res, profiles[prof]);
     res.write("</div>");
   }
+  console.log(profiles);
   res.write("</div>");
 };
 
