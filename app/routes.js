@@ -13,7 +13,7 @@ var facebookCfg = require('../config/facebook.json');
 /* clients */
 var instagramClient = require('nodestagram').createClient(instagramCfg.client_id, instagramCfg.client_secret);
 var twitterClient = require('twitter')(twitterCfg);
-var facebookClient = require('fbgraph');
+var facebookClient = require('fb');
 
 var profiler = require('../lib/profiler');
 
@@ -71,35 +71,13 @@ module.exports = function(app) {
         }
       }, function(err) {
         console.error("instagramSearch failed: " + err);
-      }).then(function() {
-				/* FACEBOOK UNDER CONSTRUCTION  */
-				/* Start here: https://www.npmjs.com/package/fbgraph */
-				var authUrl = facebookClient.getOauthUrl({
-				"client_id" : facebookCfg.client_id,
-				"redirect_uri" : facebookCfg.redirect_uri
-				});
-			console.error(authUrl); /* we gotta make some kind of request here */
-				 facebookClient.authorize({
-					"access_token" : facebookCfg.access_token,
-					"client_id" : facebookCfg.client_id,
-					"redirect_uri" : facebookCfg.redirect_uri,
-					"client_secret" : facebookCfg.client_secret
-				}, function(err, facebookRes){
-					if(err){
-						console.error("fb auth failed: ");
-						console.error(err);
-						return;
-					}
-					var graphObject = facebookClient
-						.get(req.body.fullName, function(err, res) {
-							if(err){
-								console.error("fb failed: ");
-								console.error(err);
-								return;
-							}
-							console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
-						});
-				});
+      }).then(function(){
+        return promiseFacebookSearch(req);
+      }).then(function(hits) {
+          for(var i = 0; i < hits.length; i++){
+            console.log(hits[i]);
+            profiler.putData(hits[i].id, "facebook", hits[i]);
+          }
       }, function(err) {
         console.error("facebookSearch failed: " + err);
       })
@@ -164,6 +142,47 @@ var promiseInstagramSearch = function(name) {
   });
   return deferred.promise;
 };
+
+var promiseFacebookSearch = function(req){
+        var deferred = Q.defer();
+        var hits = [];
+        /* FACEBOOK UNDER CONSTRUCTION  */
+        console.log('FACEBOOK');
+
+        facebookClient.api('oauth/access_token', {
+          client_id: facebookCfg.client_id,
+          client_secret: facebookCfg.client_secret,
+          grant_type: 'client_credentials'
+        }, function (res) {
+          if(!res || res.error) {
+            console.log(!res ? 'error occurred' : res.error);
+            return;
+        }
+
+            });
+      facebookClient.setAccessToken(facebookCfg.access_token);
+        facebookClient.api("search?q="+ req.body.fullName + "&type=user", function (res) {
+          if(!res || res.error) {
+            console.log(!res ? 'error occurred' : res.error);
+            return;
+          }
+        /* uids and names recieved, get rest */
+        for(var key in res.data){
+          facebookClient.api(res.data[key].id,{ fields: ['id', 'name', 'picture', 'work', 'gender', 'birthday', 'about', 'education', 'hometown', 'location', 'devices'] }, function(res) {
+            if(!res || res.error) {
+              console.log(!res ? 'error occurred' : res.error);
+              deferred.reject(err);
+            } else {
+                hits.push(res);
+              }
+
+            deferred.resolve(hits);
+          });
+          }
+          });
+          return deferred.promise;
+}
+
 /* Injects the JSON response from the profiler into the DOM */
 var injectResults = function(res, profiles) {
   res.write("<div class='row' style='max-width:600px; margin:auto;'>");
@@ -235,7 +254,7 @@ var injectImage = function(res, i) {
 };
 var injectString = function(res, key, s) {
   if (s.length > 1 && key !== "apiType" && key.indexOf("color") === -1 && key.indexOf("id") === -1) { /* other fields */
-    res.write("\n <p><b>" + key.replace("_", " ").replace("_", " ") + ": </b>");
+    res.write("\n <p><b>" + key + ": </b>");
     res.write(s + "</p>");
   }
 };
